@@ -9,7 +9,7 @@ setenv stmdir ${expdir}/stimtimes
 setenv SUBJECTS_DIR ${expdir}/anat
 setenv outfile `basename $0`
 setenv subs `ls ${subdir}`
-setenv swarmfile ${scrdir}/rm.${outfile}.swarm
+setenv functag task-cog
 
 
 foreach subject (${subs})
@@ -27,8 +27,8 @@ cd ${subdir}/${subject}
 
 echo "############################################create condition masks"
 3dcalc \
--a ${subject}.cog.afni_proc/stats.${subject}+orig'[mnt_mnt#0_Tstat]' \
--b ${subject}.cog.afni_proc/stats.${subject}+orig'[srt_mnt#0_Tstat]' \
+-a ${subject}.${functag}_proc/stats.${subject}+orig"[${functag}-sort-maintenance#0_Tstat]" \
+-b ${subject}.${functag}_proc/stats.${subject}+orig"[${functag}-maintain-maintenance#0_Tstat]" \
 -c ${subject}.rdlpfc.fmask.nii \
 -expr "(a-b)*ispositive(c-.5)" \
 -prefix ${subject}.srt-mnt.rdlpfc.nii
